@@ -1,49 +1,31 @@
-[![Quality Gate](https://next.sonarqube.com/sonarqube/api/project_badges/measure?project=org.sonarsource.javascript%3Ajavascript&metric=alert_status)](https://next.sonarqube.com/sonarqube/dashboard?id=org.sonarsource.javascript%3Ajavascript) [![Coverage](https://next.sonarqube.com/sonarqube/api/project_badges/measure?project=org.sonarsource.javascript%3Ajavascript&metric=coverage)](https://next.sonarqube.com/sonarqube/component_measures/domain/Coverage?id=org.sonarsource.javascript%3Ajavascript)
+> **Disclaimer** this is meant to be used as a patch until sonarjs oficially starts supporting .gjs/.gts syntax https://github.com/SonarSource/SonarJS/pull/4504
 
-This SonarSource project is a [static code analyzer](https://en.wikipedia.org/wiki/Static_program_analysis) for the JavaScript, TypeScript, and CSS languages to produce [Clean code](https://www.sonarsource.com/solutions/clean-code/).
+## Prequesites
 
-:arrow_right: [Have some feedback?](#support)
+- [JDK 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/what-is-corretto-11.html)
+- [Maven](https://maven.apache.org/install.html)
+- Node.js (we recommend using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating))
 
-:arrow_right: [eslint-plugin-sonarjs](https://github.com/SonarSource/eslint-plugin-sonarjs), our plugin for ESLint
+# Generating the jar file
 
-# Features
+```
+npm run build
+```
 
-- Advanced rules based on pattern matching and control flow analysis
-- [389 JS rules](https://rules.sonarsource.com/javascript) and [393 TS rules](https://rules.sonarsource.com/typescript)
-- [26 CSS rules](https://rules.sonarsource.com/css)
-- Compatible with ECMAScript 2015-2020
-- React JSX, Flow, Vue, and AWS lambda functions support for JavaScript and TypeScript
-- CSS, SCSS, SASS, Less, also 'style' inside HTML and VueJS files
-- Metrics (complexity, number of lines, etc.)
-- Import of test coverage reports
-- Import of ESLint, TSLint, and Stylelint issues
+This will install deps with `npm ci` command (be carefull if doing `npm i` as even patch versions can cause something to break),
+run tests and do the actual build.
 
-# Documentation
+If the build was successfull you will be able to find the generated plugins at `/sonar-plugin/sonar-javascript-plugin/target`
 
-You can find [documentation here](https://docs.sonarqube.org/latest/analysis/languages/javascript/)
+## Building custom docker image
 
-# <a name="support"></a>Have question or feedback?
+Because we are trying to replace a built in in sonarqube plugin, we can't follow standard plugin procedure,
+see [add-support-for-embers-new-gjs-gts-file-format-to-sonarjs/103769/16](https://community.sonarsource.com/t/add-support-for-embers-new-gjs-gts-file-format-to-sonarjs/103769/16) for reference, we need to swap out the lib with the jar we built
 
-### SonarSource Community Forum
+Example:
 
-If you want to report a bug, request a feature, or provide other kind of feedback, please use [SonarQube Community Forum](https://community.sonarsource.com/). Please do not forget to specify the details of your request, code reproducer, and versions of projects you use.
+```bash
+docker build -t sonarqube-with-gjs-gts --build-arg="sonar_plugin_name=sonar-javascript-plugin-10.12.0-SNAPSHOT-darwin-arm64.jar" .
+```
 
-# Contributing
-
-#### 1. Request a new feature
-
-To request a new feature, create a new thread in [SonarSource Community Forum](https://community.sonarsource.com/). Even if you plan to implement it yourself and submit it back to the community, please create a thread to be sure that we can follow up on it.
-
-#### 2. Pull Request
-
-To submit a contribution, create a pull request for this repository. Please make sure that you follow our [code style](https://github.com/SonarSource/sonar-developer-toolset) and that all [tests](/docs/DEV.md#testing) are passing.
-
-#### Work with us
-
-Would you like to work on this project full-time? We are hiring! Check out https://www.sonarsource.com/hiring
-
-## License
-
-Copyright 2011-2023 SonarSource.
-
-Licensed under the [GNU Lesser General Public License, Version 3.0](http://www.gnu.org/licenses/lgpl.txt)
+Here we create a custom sonarqube image with the plugins replaces, that will have .gjs,.gts support.

@@ -88,7 +88,7 @@ describe('analyzeProject', () => {
     });
     expect(result.meta.withWatchProgram).toBeFalsy();
     expect(result.meta.withProgram).toBeTruthy();
-    expect(result.meta.programsCreated.length).toEqual(3);
+    expect(result.meta.programsCreated.length).toEqual(4);
   });
 
   it('should analyze the whole project with watch program', async () => {

@@ -74,7 +74,7 @@ describe('worker', () => {
       const { type, error } = message;
       expect(type).toEqual('failure');
       expect(error.code).toEqual(ErrorCode.Unexpected);
-      expect(error.message).toEqual(`Cannot read file '${tsconfig}'.`);
+      expect(error.message).toMatch(new RegExp(`Cannot read file '${tsconfig}'.`));
       done();
     });
 

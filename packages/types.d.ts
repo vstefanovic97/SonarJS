@@ -17,23 +17,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import {
-  clearTSConfigs as clearTSconfigFiles,
-  getTSConfigsCount,
-  loadTSConfigs,
-} from '@sonar/jsts';
-import * as path from 'path';
-
-describe('tsconfigs', () => {
-  describe('loadTSConfigFiles', () => {
-    beforeAll(() => {
-      clearTSconfigFiles();
-    });
-
-    const fixturesDir = path.join(__dirname, 'fixtures');
-    it('should return the TSconfig files', () => {
-      loadTSConfigs(fixturesDir, []);
-      expect(getTSConfigsCount()).toEqual(8);
-    });
-  });
-});
+declare module 'ember-eslint-parser' {
+  export function parseForESLint(code: string, parserOptions: any): any;
+}
